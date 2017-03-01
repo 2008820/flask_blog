@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding=utf-8
-from flask import request
+from flask import request, render_template
 from app import app
 from model import Post_page, add_class_tags, get_tags_class
 import datetime
@@ -41,10 +41,10 @@ def post_page():
 
 
 @app.route('/')
-@app.route('/index/<pageid>')
-def index(pageid):
-    posts = Post_page.objects.paginate(page=pageid, per_page=10)
-    return posts
+def index(pagenum=1):
+    posts = Post_page.objects.paginate(page=pagenum, per_page=10)
+
+    return render_template("index.html")
 
 
 @app.route('/class/<classify>')
