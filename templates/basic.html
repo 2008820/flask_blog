@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<!-- saved from url=(0026)http://www.ghostchina.com/ -->
+<html lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    {%block seo%}
+    <title>Ghost 开源博客平台 | Ghost中文网</title>
+    <meta content="Ghost 是一套基于 Node.js 构建的开源博客平台（Open source blogging platform），具有易用的书写界面和体验，博客内容默认采用 Markdown 语法书写，目标是取代臃肿的 Wordpress。"
+          name="description"/>
+    <meta content="Ghost,blog,Ghost中国,Ghost博客,Ghost中文,Ghost中文文档" name="keywords"/>
+    {% endblock %}
+    <meta content="True" name="HandheldFriendly"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="http://www.ghostchina.com/favicon.ico" rel="shortcut icon"/>
+    <link href="{{url_for('static',filename='bootstrap.min.css')}}" rel="stylesheet"/>
+    <link href="{{url_for('static',filename='font-awesome.min.css')}}" rel="stylesheet"/>
+    <link href="{{url_for('static',filename='monokai_sublime.min.css')}}" rel="stylesheet"/>
+    <link href="{{url_for('static',filename='magnific-popup.min.css')}}" rel="stylesheet"/>
+    <link href="{{url_for('static',filename='screen.css')}}" rel="stylesheet" type="text/css"/>
+    <meta content="origin" name="referrer"/>
+    <!--<link href="http://www.ghostchina.com/page/2/" rel="next"/>-->
+    <script src="{{url_for('static',filename='ghost-url.min.js')}}" type="text/javascript"></script>
+    <!--<script type="text/javascript">-->
+    <!--ghost.init({-->
+    <!--clientId: "ghost-frontend",-->
+    <!--clientSecret: "721352203d6a"-->
+    <!--});-->
+    <!--</script>-->
+    <!--<meta content="Ghost 0.7" name="generator"/>-->
+    <!--<link href="http://www.ghostchina.com/rss/" rel="alternate"  type="application/rss+xml"/>-->
+    <script src="{{url_for('static',filename='share.js')}}"></script>
+    <style id="fit-vids-style">.fluid-width-video-wrapper {
+        width: 100%;
+        position: relative;
+        padding: 0;
+    }
+
+    .fluid-width-video-wrapper iframe, .fluid-width-video-wrapper object, .fluid-width-video-wrapper embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }</style>
+    <!--<link href="chrome-extension://fidicgekecdkdmkjghdgadgdmcfodfid/themes/classic/content.css" rel="stylesheet" type="text/css"/>-->
+    <link href="{{url_for('static',filename='share_style0_24.css')}}" rel="stylesheet"/>
+    <style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
+    .en-markup-crop-options {
+        top: 18px !important;
+        left: 50% !important;
+        margin-left: -100px !important;
+        width: 200px !important;
+        border: 2px rgba(255, 255, 255, .38) solid !important;
+        border-radius: 4px !important;
+    }
+
+    .en-markup-crop-options div div:first-of-type {
+        margin-left: 0px !important;
+    }
+    </style>
+</head>
+<body class="home-template">
+
+<!-- start header -->
+<header class="main-header"
+        style="background-image: url(http://static.ghostchina.com/image/6/d1/fcb3879e14429d75833a461572e64.jpg)">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <!-- start logo -->
+                <a class="branding" href="#" title="Ghost 开源博客平台"><img alt="Ghost 开源博客平台"
+                                                                       src="{{url_for('static',filename='4f5566c1f7bc28b3f7ac1fada8abe.png')}}"/></a>
+                <!-- end logo -->
+                <h2 class="text-hide">Ghost 是一个简洁、强大的写作平台。你只须专注于用文字表达你的想法就好，其余的事情就让 Ghost 来帮你处理吧。</h2>
+
+                <img alt="Ghost 博客系统" class="hide"
+                     src="{{url_for('static',filename='fcb3879e14429d75833a461572e64.jpg')}}"/>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- end header -->
+
+<!-- start navigation -->
+<nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header">
+                        <span class="nav-toggle-button collapsed" data-target="#main-menu" data-toggle="collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <i class="fa fa-bars"></i>
+                        </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        {% block class%}
+                        {% include 'class_name.html' %}
+                        {% endblock %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- end navigation -->
+
+
+<!-- start site's main content area -->
+<section class="content-wrap">
+
+    <div class="container">
+
+        <div class="row">
+
+            <main class="col-md-8 main-content">
+                {% block content%}
+
+                {% endblock %}
+
+                {% block art_footer%}
+
+                {% endblock art_footer%}
+
+
+            </main>
+
+            <div class="col-md-4 sidebar">
+
+                <div class="widget">
+                    <h4 class="title">个人资料</h4>
+
+                    <div class="content community">
+                        <p>QQ：2858487913</p>
+
+                        <p><a href="http://wenda.ghostchina.com/"
+                              onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '问答社区'])" target="_blank"
+                              title="Ghost中文网问答社区"><i class="fa fa-comments"></i> 问答社区</a></p>
+
+                        <p><a href="http://weibo.com/ghostchinacom"
+                              onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '官方微博'])" target="_blank"
+                              title="Ghost中文网官方微博"><i class="fa fa-weibo"></i> 官方微博</a></p>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <h4 class="title">标签云</h4>
+
+                    <div class="content tag-cloud">
+                        {% for tag in tags %}
+                        <a href="{{tag|set_url(0)}}">{{tag}}</a>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+                <div class="col-sm-18">
+                    <div class="widget">
+                        <h4 class="title">最新文章</h4>
+
+                        <div class="content recent-post">
+                            <div class="recent-single-post">
+                                <a class="post-title" href="http://www.ghostchina.com/moving-to-node-js-v4-lts/">Node.js
+                                    v4
+                                    LTS 成为 Ghost 推荐版本</a>
+
+                                <div class="date">2016年7月26日</div>
+                            </div>
+                            <div class="recent-single-post">
+                                <a class="post-title"
+                                   href="http://www.ghostchina.com/ghost-zhuo-mian-ban-app-geng-xin-neng-gou-tong-shi-guan-li-duo-ge-ghost-bo-ke/">Ghost
+                                    桌面版 APP 正式发布，能同时管理多个 Ghost 博客</a>
+
+                                <div class="date">2016年4月28日</div>
+                            </div>
+                            <div class="recent-single-post">
+                                <a class="post-title"
+                                   href="http://www.ghostchina.com/install-nodejs-of-latest-version-in-ubuntu-and-debian/">为
+                                    Ubuntu 和 Debian 安装最新版本的 Node.js</a>
+
+                                <div class="date">2016年3月23日</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-18">
+                    <div class="widget">
+                        <h4 class="title">推荐博客</h4>
+
+                        <div class="content tag-cloud friend-links">
+                            <a href="http://www.bootcss.com/"
+                               onclick="_hmt.push(['_trackEvent', 'link', 'click', 'bootcsscom'])" target="_blank"
+                               title="Bootstrap中文网">Bootstrap中文网</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- end tag cloud widget -->
+
+                <!-- start widget -->
+                <!-- end widget -->
+
+                <!-- start widget -->
+                <!-- end widget -->                </div>
+
+        </div>
+    </div>
+</section>
+
+<footer class="main-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="widget">
+                    <h4 class="title">最新文章</h4>
+
+                    <div class="content recent-post">
+                        <div class="recent-single-post">
+                            <a class="post-title" href="http://www.ghostchina.com/moving-to-node-js-v4-lts/">Node.js v4
+                                LTS 成为 Ghost 推荐版本</a>
+
+                            <div class="date">2016年7月26日</div>
+                        </div>
+                        <div class="recent-single-post">
+                            <a class="post-title"
+                               href="http://www.ghostchina.com/ghost-zhuo-mian-ban-app-geng-xin-neng-gou-tong-shi-guan-li-duo-ge-ghost-bo-ke/">Ghost
+                                桌面版 APP 正式发布，能同时管理多个 Ghost 博客</a>
+
+                            <div class="date">2016年4月28日</div>
+                        </div>
+                        <div class="recent-single-post">
+                            <a class="post-title"
+                               href="http://www.ghostchina.com/install-nodejs-of-latest-version-in-ubuntu-and-debian/">为
+                                Ubuntu 和 Debian 安装最新版本的 Node.js</a>
+
+                            <div class="date">2016年3月23日</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="widget">
+                    <h4 class="title">标签云</h4>
+
+                    <div class="content tag-cloud">
+                        <a href="http://www.ghostchina.com/tag/about-ghost/">Ghost</a>
+                        <a href="http://www.ghostchina.com/tag/release/">新版本发布</a>
+                        <a href="http://www.ghostchina.com/tag/javascript/">JavaScript</a>
+                        <a href="http://www.ghostchina.com/tag/promise/">Promise</a>
+                        <a href="http://www.ghostchina.com/tag/zhuti/">主题</a>
+                        <a href="http://www.ghostchina.com/tag/nodejs/">Node.js</a>
+                        <a href="http://www.ghostchina.com/tag/mysql/">MySQL</a>
+                        <a href="http://www.ghostchina.com/tag/nginx/">Nginx</a>
+                        <a href="http://www.ghostchina.com/tag/aliyun-ecs/">阿里云服务器</a>
+                        <a href="http://www.ghostchina.com/tag/ubuntu/">Ubuntu</a>
+                        <a href="http://www.ghostchina.com/tag/ghost-in-depth/">深度玩转 Ghost</a>
+                        <a href="http://www.ghostchina.com/tag/theme/">Theme</a>
+                        <a href="http://www.ghostchina.com/tag/markdown/">Markdown</a>
+                        <a href="http://www.ghostchina.com/tag/proxy/">反向代理</a>
+                        <a href="http://www.ghostchina.com/tag/apache/">Apache</a>
+
+                        <a href="http://www.ghostchina.com/tag-cloud/">...</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="widget">
+                    <h4 class="title">推荐博客</h4>
+
+                    <div class="content tag-cloud friend-links">
+                        <a href="http://www.bootcss.com/"
+                           onclick="_hmt.push(['_trackEvent', 'link', 'click', 'bootcsscom'])" target="_blank"
+                           title="Bootstrap中文网">Bootstrap中文网</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright © <a href="#">Ghost中文网</a></span> |
+                <span><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备11008151号</a></span> |
+                <span>京公网安备11010802014853</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="http://www.ghostchina.com/#" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+<script src="{{url_for('static',filename='jquery.min.js')}}"></script>
+<script src="{{url_for('static',filename='bootstrap.min.js')}}"></script>
+<script src="{{url_for('static',filename='jquery.fitvids.min.js')}}"></script>
+<script src="{{url_for('static',filename='highlight.min.js')}}"></script>
+<script src="{{url_for('static',filename='jquery.magnific-popup.min.js')}}"></script>
+<script src="{{url_for('static',filename='main.js')}}"></script>
+<script>
+    $(function () {
+        $('.post-content img').each(function (item) {
+            var src = $(this).attr('src');
+
+            $(this).wrap('<a href="' + src + '" class="mfp-zoom" style="display:block;"></a>');
+        });
+
+        /*$('.post-content').magnificPopup({
+         delegate: 'a',
+         type: 'image'
+         });*/
+    });
+</script>
+
+
+</body>
+</html>

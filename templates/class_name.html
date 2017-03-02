@@ -1,0 +1,5 @@
+<li  role="presentation"><a href="/">首页</a></li>
+<!--class="nav-current"-->
+{% for cn,en in classify.items()%}
+<li role="presentation"><a href="{{en|set_url(3)}}">{{cn}}</a></li>
+{% endfor %}
