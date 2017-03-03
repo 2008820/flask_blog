@@ -11,28 +11,36 @@
 
 {% block art_footer%}
 <nav aria-label="Page navigation">
-<ul class="pagination">
-    <li>
-        <a aria-label="Previous" href="#">
-            <span aria-hidden="true">«</span>
-        </a>
-    </li>
+    <ul class="pagination">
+        <li>
+            <a aria-label="Previous" href="#">
+                <span aria-hidden="true">«</span>
+            </a>
+        </li>
 
-    {% for num in pagenum %}
-    {%if page_class == 2%}
-    <li><a href="{{num|set_url(2)}}">{{num}}</a></li>
-    {%elif page_class == 3%}
-    <li><a href="{{ num|set_url(3)}}">{{num}}</a></li>
-    {%else %}
-    <li><a href="{{num|set_url(1)}}">{{num}}</a></li>
-    {% endif %}
-    {% endfor %}
+        {% for num in pagenum %}
 
-    <li>
-        <a aria-label="Next" href="#">
-            <span aria-hidden="true">»</span>
-        </a>
-    </li>
-</ul>
+        {%if page_class == 2%}
+        {% if current_page==num %}
+        <li class="active"><a href="{{num|set_url(2)}}">{{num}}</a></li>
+        {% else %}
+        <li><a href="{{num|set_url(2)}}">{{num}}</a></li>
+        {% endif %}
+        {% else %}
+        {% if current_page==num %}
+        <li class="active"><a href="{{ split_page_url[pagenum.index(num)]|set_url(page_class)}}">{{num}}</a></li>
+        {% else %}
+        <li><a href="{{ split_page_url[pagenum.index(num)]|set_url(page_class)}}">{{num}}</a></li>
+        {% endif %}
+
+        {% endif %}
+        {% endfor %}
+
+        <li>
+            <a aria-label="Next" href="#">
+                <span aria-hidden="true">»</span>
+            </a>
+        </li>
+    </ul>
 </nav>
 {% endblock art_footer%}

@@ -45,35 +45,42 @@ def add_class_tags(class_list=[], tags_list=[]):
             if not Class_tags.objects(_id='index').filter(tagList=tag):
                 Class_tags.objects(_id='index').update_one(push__tagList=tag, upsert=True)
 
+
 # class list 2 dict
-def class_list_obj(cla_list,class_dict):
+def class_list_obj(cla_list, class_dict):
     claobj = {}
     for classify in cla_list:
-        claobj[classify] =class_dict.get(classify, classify)
+        claobj[classify] = class_dict.get(classify, classify)
     return claobj
 
 
 def get_tags_class(class_dict_conf):
     class_tag = Class_tags.objects.get(_id='index')
-    class_list = class_list_obj(class_tag.classifyList,class_dict_conf)
+    class_list = class_list_obj(class_tag.classifyList, class_dict_conf)
     tag_list = class_tag.tagList
     return class_list, tag_list
+
 
 def get_index_data(page):
     posts = Post_page.objects.paginate(page=page, per_page=10)
     return posts
 
+
 # 分页
-def split_page_func(page_all,pagenum):
-    if pagenum > 6 and pagenum <= page_all-5:
+def split_page_func(page_all, pagenum):
+    if pagenum > 6 and pagenum <= page_all - 5:
         split_page = range(pagenum - 5, pagenum + 5)
-    elif pagenum >= page_all-4:
-        split_page = range(page_all-9, page_all+1)
-    elif pagenum <= 6:
+    elif pagenum > 6 and page_all < 12:
+        split_page = range(pagenum - 5, page_all + 1)
+    elif pagenum > (page_all - 5) and page_all > 10:
+        split_page = range(page_all - 9, page_all + 1)
+    elif pagenum <= 6 and page_all > 10:
         split_page = range(1, 10)
+    elif pagenum <= 6 and page_all <= 10:
+        split_page = range(1, page_all + 1)
+    else:
+        split_page = range(10)
     return split_page
-
-
 
 
 if __name__ == '__main__':

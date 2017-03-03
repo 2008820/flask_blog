@@ -15,10 +15,10 @@ def post_list(data):
 
 class setting():
     page = 3
-    class_url = {u'关于':'about'}
+    class_url = {}
 
 class class_tag(object):
-    class_list = []
+    class_list = {}
     tag_list = []
     page_all = 0
 
@@ -29,7 +29,7 @@ def class_list_obj(cla_list,class_dict):
     return claobj
 
 ct = class_tag()
-ct.class_list, ct.tag_list = get_tags_class(setting.class_url)
+_, ct.tag_list = get_tags_class(setting.class_url)
 ct.page_all = len(Post_page.objects) / setting.page + 1
 
 
@@ -53,6 +53,23 @@ def post_page():
     return 'OK'
 
 
+def view_tag_class(kinds, vaule, numnow, **context):
+    pagenum_int = int(numnow)
+    if kinds == "tags":
+        db_objects = Post_page.objects(tags=vaule)
+        page_class=1
+    elif kinds == 'classify':
+        db_objects = Post_page.objects(classify=vaule)
+        page_class=3
+    posts = db_objects.paginate(page=pagenum_int, per_page=setting.page)
+    all_page = len(db_objects)/setting.page + 1
+    split_page_num = split_page_func(all_page, pagenum_int)
+    print all_page, split_page_num
+    split_page_url = [vaule+'/'+str(item) for item in split_page_num]
+    return render_template("index.html", page=posts, kinds=vaule, pagenum=split_page_num, page_class=page_class,
+                           classify=ct.class_list, tags=ct.tag_list, split_page_url=split_page_url,
+                           current_page=pagenum_int, **context)
+
 
 
 @app.route('/')
@@ -60,20 +77,18 @@ def post_page():
 def index(pagenum=1):
     pagenum_int = int(pagenum)
     posts = Post_page.objects.paginate(page=pagenum_int, per_page=setting.page)
-    split_page = split_page_func(ct.page_all, pagenum)
-    return render_template("index.html", page=posts, pagenum=split_page, page_class=2, classify=ct.class_list, tags=ct.tag_list)
+    split_page = split_page_func(ct.page_all, pagenum_int)
+    return render_template("index.html", page=posts, pagenum=split_page, page_class=2, classify=ct.class_list,
+                           tags=ct.tag_list, current_page=pagenum_int)
 
 
 @app.route('/class/<classify>')
 @app.route('/class/<classify>/<pagenum>')
 def class_view(classify, pagenum=1):
-    pagenum_int = int(pagenum)
-    posts = Post_page.objects(classify=classify).paginate(page=pagenum_int, per_page=setting.page)
-    split_page = split_page_func(len(Post_page.objects(classify=classify)), pagenum)
-
-    return render_template("index.html", page=posts, kinds=classify, pagenum=split_page, page_class=3, classify=ct.class_list, tags=ct.tag_list)
+     return view_tag_class('classify', classify, pagenum)
 
 
 @app.route('/tags/<tag>')
-def tag_view(tag):
-    pass
+@app.route('/tags/<tag>/<pagenum>')
+def tag_view(tag, pagenum=1):
+    return view_tag_class('tags', tag, pagenum)
