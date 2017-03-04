@@ -55,10 +55,13 @@ def class_list_obj(cla_list, class_dict):
 
 
 def get_tags_class(class_dict_conf):
-    class_tag = Class_tags.objects.get(_id='index')
-    class_list = class_list_obj(class_tag.classifyList, class_dict_conf)
-    tag_list = class_tag.tagList
-    return class_list, tag_list
+    try:
+        class_tag = Class_tags.objects.get(_id='index')
+        class_list = class_list_obj(class_tag.classifyList, class_dict_conf)
+        tag_list = class_tag.tagList
+        return class_list, tag_list
+    except:
+        return [],[]
 
 
 def get_index_data(page):
