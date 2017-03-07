@@ -27,4 +27,4 @@ replace_name('link', 'href')
 replace_name('script', 'src')
 replace_name('img', 'src')
 
-open('index.html', 'w').write(str(soup))
+open('admin/post.html', 'w').write(str(soup))

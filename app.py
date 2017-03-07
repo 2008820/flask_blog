@@ -4,10 +4,11 @@ from flask import Flask
 from flask_mongoengine import MongoEngine
 from flask_bootstrap import Bootstrap
 import sys
-
+import os
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
+root_path = os.path.abspath('./')
+image_path = root_path + '/image'
 
 def timestamp(time, type=False):
     if type:
@@ -32,6 +33,7 @@ def create_app():
         'db': 'web_app',
         'host': "127.0.0.1"
     }
+    app.config['UPLOAD_FOLDER'] = image_path
     app.config['SECRET_KEY'] = 'sadasdsadplosadaskldalskd'
     Bootstrap(app)
     app.add_template_filter(timestamp, 'timestamp')
