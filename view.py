@@ -82,6 +82,17 @@ def GetImage():
             res.headers["Charset"] = "utf-8"
             return res
 
+@app.route('/image/<name>')
+def get_image(name):
+    print name
+    with open(app.config['UPLOAD_FOLDER'] + '/' + name) as f:
+        image_file = f.read()
+    return image_file
+
+
+
+
+
 
 def view_tag_class(kinds, vaule, numnow, **context):
     pagenum_int = int(numnow)
@@ -100,11 +111,7 @@ def view_tag_class(kinds, vaule, numnow, **context):
                            classify=ct.class_list, tags=ct.tag_list, split_page_url=split_page_url,
                            current_page=pagenum_int, **context)
 
-@app.route('/image/<name>')
-def get_image(name):
-    with open(app.config['UPLOAD_FOLDER'] + '/' + name) as f:
-        image_file = f
-    return image_file
+
 
 
 @app.route('/')

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>wangEditor</title>
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='admin/css/wangEditor.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='admin/css/dark.css')}}">
     <style type="text/css">
         #content {
             width: 100%;
@@ -35,7 +36,9 @@
             editor.config.uploadHeaders = {
                 'Accept' : 'text/x-json',
             };
-
+            var editor = new wangEditor('editor-trigger');
+            // 插入代码时的默认语言
+            editor.config.codeDefaultLang = 'python'
             // 隐藏掉插入网络图片功能。该配置，只有在你正确配置了图片上传功能之后才可用。
             editor.config.hideLinkImg = false;
             editor.create();
