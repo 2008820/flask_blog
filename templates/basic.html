@@ -63,7 +63,7 @@
 
                 <!-- start logo -->
                 <a class="branding" href="#" title="无聊的博客系统"><img alt="无聊的博客系统"
-                                                                       src="{{url_for('static',filename='4f5566c1f7bc28b3f7ac1fada8abe.png')}}"/></a>
+                                                                  src="{{url_for('static',filename='4f5566c1f7bc28b3f7ac1fada8abe.png')}}"/></a>
                 <!-- end logo -->
                 <h2 class="text-hide">无聊的博客系统</h2>
 
@@ -127,13 +127,9 @@
                     <div class="content community">
                         <p>QQ：2858487913</p>
 
-                        <p><a href="http://wenda.ghostchina.com/"
-                              onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '问答社区'])" target="_blank"
-                              title="Ghost中文网问答社区"><i class="fa fa-comments"></i> 问答社区</a></p>
+                        <p></p>
 
-                        <p><a href="http://weibo.com/ghostchinacom"
-                              onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '官方微博'])" target="_blank"
-                              title="Ghost中文网官方微博"><i class="fa fa-weibo"></i> 官方微博</a></p>
+                        <p></p>
                     </div>
                 </div>
 
@@ -159,20 +155,6 @@
                                     LTS 成为 Ghost 推荐版本</a>
 
                                 <div class="date">2016年7月26日</div>
-                            </div>
-                            <div class="recent-single-post">
-                                <a class="post-title"
-                                   href="http://www.ghostchina.com/ghost-zhuo-mian-ban-app-geng-xin-neng-gou-tong-shi-guan-li-duo-ge-ghost-bo-ke/">Ghost
-                                    桌面版 APP 正式发布，能同时管理多个 Ghost 博客</a>
-
-                                <div class="date">2016年4月28日</div>
-                            </div>
-                            <div class="recent-single-post">
-                                <a class="post-title"
-                                   href="http://www.ghostchina.com/install-nodejs-of-latest-version-in-ubuntu-and-debian/">为
-                                    Ubuntu 和 Debian 安装最新版本的 Node.js</a>
-
-                                <div class="date">2016年3月23日</div>
                             </div>
                         </div>
                     </div>
@@ -204,32 +186,6 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
-                <div class="widget">
-                    <h4 class="title">最新文章</h4>
-
-                    <div class="content recent-post">
-                        <div class="recent-single-post">
-                            <a class="post-title" href="http://www.ghostchina.com/moving-to-node-js-v4-lts/">Node.js v4
-                                LTS 成为 Ghost 推荐版本</a>
-
-                            <div class="date">2016年7月26日</div>
-                        </div>
-                        <div class="recent-single-post">
-                            <a class="post-title"
-                               href="http://www.ghostchina.com/ghost-zhuo-mian-ban-app-geng-xin-neng-gou-tong-shi-guan-li-duo-ge-ghost-bo-ke/">Ghost
-                                桌面版 APP 正式发布，能同时管理多个 Ghost 博客</a>
-
-                            <div class="date">2016年4月28日</div>
-                        </div>
-                        <div class="recent-single-post">
-                            <a class="post-title"
-                               href="http://www.ghostchina.com/install-nodejs-of-latest-version-in-ubuntu-and-debian/">为
-                                Ubuntu 和 Debian 安装最新版本的 Node.js</a>
-
-                            <div class="date">2016年3月23日</div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="col-sm-4">
@@ -237,23 +193,10 @@
                     <h4 class="title">标签云</h4>
 
                     <div class="content tag-cloud">
-                        <a href="http://www.ghostchina.com/tag/about-ghost/">Ghost</a>
-                        <a href="http://www.ghostchina.com/tag/release/">新版本发布</a>
-                        <a href="http://www.ghostchina.com/tag/javascript/">JavaScript</a>
-                        <a href="http://www.ghostchina.com/tag/promise/">Promise</a>
-                        <a href="http://www.ghostchina.com/tag/zhuti/">主题</a>
-                        <a href="http://www.ghostchina.com/tag/nodejs/">Node.js</a>
-                        <a href="http://www.ghostchina.com/tag/mysql/">MySQL</a>
-                        <a href="http://www.ghostchina.com/tag/nginx/">Nginx</a>
-                        <a href="http://www.ghostchina.com/tag/aliyun-ecs/">阿里云服务器</a>
-                        <a href="http://www.ghostchina.com/tag/ubuntu/">Ubuntu</a>
-                        <a href="http://www.ghostchina.com/tag/ghost-in-depth/">深度玩转 Ghost</a>
-                        <a href="http://www.ghostchina.com/tag/theme/">Theme</a>
-                        <a href="http://www.ghostchina.com/tag/markdown/">Markdown</a>
-                        <a href="http://www.ghostchina.com/tag/proxy/">反向代理</a>
-                        <a href="http://www.ghostchina.com/tag/apache/">Apache</a>
 
-                        <a href="http://www.ghostchina.com/tag-cloud/">...</a>
+                        {% for tag in tags %}
+                        <a href="{{tag|set_url()}}">{{tag}}</a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -277,7 +220,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <span>Copyright © <a href="#">Ghost中文网</a></span> |
+                <span>Copyright © <a href="#">铁脑壳</a></span> |
                 <span><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备11008151号</a></span> |
                 <span>京公网安备11010802014853</span>
             </div>
