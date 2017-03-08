@@ -1,4 +1,4 @@
-{% macro article(object) %}
+{% macro article(object,flow=0) %}
     {% for item in object.items %}
                 <article class="post" id="">
                     <div class="post-head">
@@ -14,11 +14,19 @@
                         <a href="{{item.url|set_url(0)}}"><img alt="Ghost 桌面版 APP 正式发布，能同时管理多个 Ghost 博客" src="{{url_for('static',filename='e447fa21190690b28f1957d5937f4.png')}}"/></a>
                     </div>
                     <div class="post-content">
+                        {% if flow==1 %}
+                        {% autoescape false %}
+                        <p>{{item.content}}</p>
+                        {% endautoescape %}
+                        {% else %}
                         <p>{{item.content[:100]}}</p>
+                        {% endif %}
                     </div>
+                    {% if flow==0 %}
                     <div class="post-permalink">
                         <a class="btn btn-default" href="{{item.url|set_url(0)}}">阅读全文</a>
                     </div>
+                    {% endif %}
                     <footer class="post-footer clearfix">
                         <div class="pull-left tag-list">
                             <i class="fa fa-folder-open-o"></i>

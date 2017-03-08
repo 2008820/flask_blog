@@ -20,16 +20,7 @@
     <link href="{{url_for('static',filename='magnific-popup.min.css')}}" rel="stylesheet"/>
     <link href="{{url_for('static',filename='screen.css')}}" rel="stylesheet" type="text/css"/>
     <meta content="origin" name="referrer"/>
-    <!--<link href="http://www.ghostchina.com/page/2/" rel="next"/>-->
     <script src="{{url_for('static',filename='ghost-url.min.js')}}" type="text/javascript"></script>
-    <!--<script type="text/javascript">-->
-    <!--ghost.init({-->
-    <!--clientId: "ghost-frontend",-->
-    <!--clientSecret: "721352203d6a"-->
-    <!--});-->
-    <!--</script>-->
-    <!--<meta content="Ghost 0.7" name="generator"/>-->
-    <!--<link href="http://www.ghostchina.com/rss/" rel="alternate"  type="application/rss+xml"/>-->
     <script src="{{url_for('static',filename='share.js')}}"></script>
     <style id="fit-vids-style">.fluid-width-video-wrapper {
         width: 100%;
@@ -71,12 +62,12 @@
             <div class="col-sm-12">
 
                 <!-- start logo -->
-                <a class="branding" href="#" title="Ghost 开源博客平台"><img alt="Ghost 开源博客平台"
+                <a class="branding" href="#" title="无聊的博客系统"><img alt="无聊的博客系统"
                                                                        src="{{url_for('static',filename='4f5566c1f7bc28b3f7ac1fada8abe.png')}}"/></a>
                 <!-- end logo -->
-                <h2 class="text-hide">Ghost 是一个简洁、强大的写作平台。你只须专注于用文字表达你的想法就好，其余的事情就让 Ghost 来帮你处理吧。</h2>
+                <h2 class="text-hide">无聊的博客系统</h2>
 
-                <img alt="Ghost 博客系统" class="hide"
+                <img alt="无聊的博客系统" class="hide"
                      src="{{url_for('static',filename='fcb3879e14429d75833a461572e64.jpg')}}"/>
             </div>
         </div>
@@ -151,7 +142,7 @@
 
                     <div class="content tag-cloud">
                         {% for tag in tags %}
-                        <a href="{{tag|set_url(1)}}">{{tag}}</a>
+                        <a href="{{tag|set_url()}}">{{tag}}</a>
                         {% endfor %}
 
                     </div>

@@ -13,10 +13,18 @@
     </style>
 </head>
 <body>
-
-    <textarea id="content">
+      <form action="{{ url_for('post_page') }}" method=post id="postPage">
+    <dl>
+            <dt>title---------<input type=text name=title>
+            <dt>publishTime---<input type=text name=publish>
+            <dt>classify------<input type=text name=classify>
+            <dt>tags----------<input type=text name=tags>
+        <dd> <input type=submit value=Post>
+      </form>
+    <textarea form="postPage"  id="content" name="content">
         <p>请输入内容...</p>
     </textarea>
+
 
     <script type="text/javascript" src="{{url_for('static',filename='admin/js/jquery-1.10.2.min.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static',filename='admin/js/wangEditor.js')}}"></script>
@@ -36,7 +44,7 @@
             editor.config.uploadHeaders = {
                 'Accept' : 'text/x-json',
             };
-            var editor = new wangEditor('editor-trigger');
+//            var editor = new wangEditor('editor-trigger');
             // 插入代码时的默认语言
             editor.config.codeDefaultLang = 'python'
             // 隐藏掉插入网络图片功能。该配置，只有在你正确配置了图片上传功能之后才可用。

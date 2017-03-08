@@ -11,7 +11,7 @@ import os
 
 def post_list(data):
     if data:
-        return json.loads(data)
+        return data.split(',')
     return []
 
 
@@ -35,19 +35,28 @@ def class_list_obj(cla_list, class_dict):
 
 ct = class_tag()
 _, ct.tag_list = get_tags_class(setting.class_url)
-ct.page_all = len(Post_page.objects) / setting.page + 1
+if len(Post_page.objects) % setting.page == 0:
+    ct.page_all = len(Post_page.objects) / setting.page
+else:
+    ct.page_all = len(Post_page.objects) / setting.page + 1
 
 
 @app.route('/post', methods=['GET', 'POST'])
 def post_page():
     if request.method == 'POST':
         post_data = request.form
+        print post_data
+        print post_data.get('content', 'nonecontent')
         print post_data.get('classify')
         class_list = post_list(post_data.get('classify', ''))
         tags_list = post_list(post_data.get('tags', ''))
+        publish_time = post_data.get('publish', datetime.datetime.now())
+        if isinstance(publish_time, str):
+            publish_time = datetime.datetime.strptime(publish_time, "%Y-%m-%d %H:%M:%S")
+        print publish_time
         Post_page.objects(title=post_data['title']).update_one(tags=tags_list,
                                                                classify=class_list,
-                                                               publish=post_data.get('publish', datetime.datetime.now),
+                                                               publish=publish_time,
                                                                content=post_data.get('content', ''),
                                                                url=uuid.uuid4().__str__(), upsert=True)
         # page.save()
@@ -85,9 +94,10 @@ def GetImage():
 @app.route('/image/<name>')
 def get_image(name):
     print name
-    with open(app.config['UPLOAD_FOLDER'] + '/' + name) as f:
-        image_file = f.read()
-    return image_file
+    image = file(app.config['UPLOAD_FOLDER'] + '/' + name)
+    resp = Response(image, mimetype="image/jpeg")
+
+    return resp
 
 
 
@@ -134,3 +144,9 @@ def class_view(classify, pagenum=1):
 @app.route('/tags/<tag>/<pagenum>')
 def tag_view(tag, pagenum=1):
     return view_tag_class('tags', tag, pagenum)
+
+@app.route('/detail/<pageId>')
+def get_page_detail(pageId):
+    pageObj = Post_page.objects(url=pageId).paginate(page=1, per_page=setting.page)
+    print pageObj.items
+    return render_template("detail.html", page=pageObj, classify=ct.class_list,tags=ct.tag_list)
