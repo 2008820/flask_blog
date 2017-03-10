@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from app import db
+from creat_app  import db
 import datetime
 from flask_login import UserMixin
 

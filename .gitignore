@@ -89,4 +89,4 @@ ENV/
 .ropeproject
 .idea
 .idea/vcs.xml
-web_conf.py
+app/web_conf.py
