@@ -88,5 +88,6 @@ ENV/
 # Rope project settings
 .ropeproject
 .idea
+
 .idea/vcs.xml
 app/web_conf.py
