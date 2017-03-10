@@ -5,6 +5,10 @@ from app import app, login_manager
 from flask_login import login_user, login_required,logout_user, current_user
 from model import Post_page, add_class_tags, get_tags_class, split_page_func,User
 import datetime
+try:
+    import qiniu_image
+except:
+    pass
 import json
 import uuid
 import os
@@ -17,11 +21,8 @@ def post_list(data):
     return []
 
 
-class setting():
-    page = 3
-    class_url = {}
 
-
+# class_tag 缓存
 class class_tag(object):
     class_list = {}
     tag_list = []
@@ -29,18 +30,20 @@ class class_tag(object):
 
 
 def class_list_obj(cla_list, class_dict):
-    claobj = {}
+    claobj = {}  # key cn vaule en
     for classify in cla_list:
         claobj[classify] = class_dict.get(classify, classify)
     return claobj
 
 
 ct = class_tag()
-_, ct.tag_list = get_tags_class(setting.class_url)
-if len(Post_page.objects) % setting.page == 0:
-    ct.page_all = len(Post_page.objects) / setting.page
+class_list, ct.tag_list = get_tags_class()
+ct.class_list = class_list_obj(class_list, app.config["classify_url"])
+
+if len(Post_page.objects) % app.config["posts_num"] == 0:
+    ct.page_all = len(Post_page.objects) / app.config["posts_num"]
 else:
-    ct.page_all = len(Post_page.objects) / setting.page + 1
+    ct.page_all = len(Post_page.objects) / app.config["posts_num"] + 1
 
 @login_manager.user_loader
 def user_loader(user):
@@ -54,9 +57,6 @@ def user_loader(user):
 def post_page():
     if request.method == 'POST':
         post_data = request.form
-        print post_data
-        print post_data.get('content', 'nonecontent')
-        print post_data.get('classify')
         class_list = post_list(post_data.get('classify', ''))
         tags_list = post_list(post_data.get('tags', ''))
         publish_time = post_data.get('publish', datetime.datetime.now())
@@ -70,8 +70,9 @@ def post_page():
                                                                url=uuid.uuid4().__str__(), upsert=True)
         # page.save()
         add_class_tags(class_list, tags_list)
-        ct.class_list, ct.tag_list = get_tags_class(setting.class_url)
-        ct.page_all = len(Post_page.objects) / setting.page + 1
+        class_list, ct.tag_list = get_tags_class()
+        ct.class_list = class_list_obj(class_list, app.config["classify_url"])
+        ct.page_all = len(Post_page.objects) / app.config["posts_num"] + 1
         return 'post ok!'
     return render_template('admin/post.html')
 
@@ -98,11 +99,7 @@ def logout():
 
 @app.route("/ImageUpdate", methods=["POST"])
 def GetImage():
-    print '111111111'
-    print dir(request)
-    print request.files
     file = request.files['wangEditorH5File']
-    print '2222222222'
     if file == None:
         result = r"error|未成功获取文件，上传失败"
         res = Response(result)
@@ -110,22 +107,21 @@ def GetImage():
         res.headers["Charset"] = "utf-8"
         return res
     else:
-        # if file and allowed_file(file.filename):
         if file:
-            filename = file.filename
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            imgUrl = "/image/" + filename
-            res = Response(imgUrl)
-            res.headers["ContentType"] = "text/html"
-            res.headers["Charset"] = "utf-8"
-            return res
+            if not app.config.get("qiniuhost",""):
+                filename = file.filename
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                imgUrl = "/image/"
+                res = Response(imgUrl)
+                res.headers["ContentType"] = "text/html"
+                res.headers["Charset"] = "utf-8"
+            qiniu_image.upload(file)
+            return app.config["qiniuhost"] + file.filename
 
 @app.route('/image/<name>')
 def get_image(name):
-    print name
     image = file(app.config['UPLOAD_FOLDER'] + '/' + name)
     resp = Response(image, mimetype="image/jpeg")
-
     return resp
 
 
@@ -141,10 +137,9 @@ def view_tag_class(kinds, vaule, numnow, **context):
     elif kinds == 'classify':
         db_objects = Post_page.objects(classify=vaule)
         page_class = 3
-    posts = db_objects.paginate(page=pagenum_int, per_page=setting.page)
-    all_page = len(db_objects) / setting.page + 1
+    posts = db_objects.paginate(page=pagenum_int, per_page=app.config["posts_num"])
+    all_page = len(db_objects) / app.config["posts_num"] + 1
     split_page_num = split_page_func(all_page, pagenum_int)
-    print all_page, split_page_num
     split_page_url = [vaule + '/' + str(item) for item in split_page_num]
     return render_template("index.html", page=posts, kinds=vaule, pagenum=split_page_num, page_class=page_class,
                            classify=ct.class_list, tags=ct.tag_list, split_page_url=split_page_url,
@@ -157,7 +152,7 @@ def view_tag_class(kinds, vaule, numnow, **context):
 @app.route('/page/<pagenum>')
 def index(pagenum=1):
     pagenum_int = int(pagenum)
-    posts = Post_page.objects.paginate(page=pagenum_int, per_page=setting.page)
+    posts = Post_page.objects.paginate(page=pagenum_int, per_page=app.config["posts_num"])
     split_page = split_page_func(ct.page_all, pagenum_int)
     return render_template("index.html", page=posts, pagenum=split_page, page_class=2, classify=ct.class_list,
                            tags=ct.tag_list, current_page=pagenum_int)
@@ -176,6 +171,5 @@ def tag_view(tag, pagenum=1):
 
 @app.route('/detail/<pageId>')
 def get_page_detail(pageId):
-    pageObj = Post_page.objects(url=pageId).paginate(page=1, per_page=setting.page)
-    print pageObj.items
+    pageObj = Post_page.objects(url=pageId).paginate(page=1, per_page=app.config["posts_num"])
     return render_template("detail.html", page=pageObj, classify=ct.class_list,tags=ct.tag_list)

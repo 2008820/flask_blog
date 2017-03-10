@@ -4,6 +4,7 @@ from flask import Flask
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
 import sys
+from web_conf import user, passwd
 import os
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -15,6 +16,8 @@ def timestamp(time, type=False):
         return time.strftime("%Y年%m月%d日 %H时%M分%S秒")
     return time.strftime("%Y年%m月%d日")
 
+if not os.path.exists("image"):
+    os.mkdir("image")
 
 def set_url(name, kinds=0):
     if kinds == 0:
@@ -32,10 +35,13 @@ def create_app():
         'db': 'web_app',
         'host': "127.0.0.1"
     }
+    app.config["posts_num"] = 6
+    app.config['classify_url'] = {}
     app.config['UPLOAD_FOLDER'] = image_path
     app.config['SECRET_KEY'] = 'sadasdsadplosadaskldalskd'
-    app.config['author'] = 'febrain'
-    app.config['passwd'] = 'qwer1234'
+    app.config['author'] = user
+    app.config['passwd'] = passwd
+    app.config['qiniuhost'] = "http://oml5dvid2.bkt.clouddn.com/"
     app.add_template_filter(timestamp, 'timestamp')
     app.add_template_filter(set_url, 'set_url')
     return app

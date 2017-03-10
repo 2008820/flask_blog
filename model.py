@@ -45,7 +45,7 @@ class User(UserMixin):
 
 
 # 聚合标签和分类
-def add_class_tags(class_list=[], tags_list=[]):
+def add_class_tags(class_list={}, tags_list=[]):
     if class_list:
         for classify in class_list:
             print classify
@@ -65,10 +65,10 @@ def class_list_obj(cla_list, class_dict):
     return claobj
 
 
-def get_tags_class(class_dict_conf):
+def get_tags_class():
     try:
         class_tag = Class_tags.objects.get(_id='index')
-        class_list = class_list_obj(class_tag.classifyList, class_dict_conf)
+        class_list = class_tag.classifyList
         tag_list = class_tag.tagList
         return class_list, tag_list
     except:
