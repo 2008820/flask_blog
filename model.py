@@ -3,6 +3,7 @@
 
 from app import db
 import datetime
+from flask_login import UserMixin
 
 
 class Post_page(db.Document):
@@ -31,6 +32,16 @@ class Class_tags(db.Document):
     _id = db.StringField(required=True)
     classifyList = db.ListField(db.StringField(max_length=50))
     tagList = db.ListField(db.StringField(max_length=30))
+
+
+class User(UserMixin):
+    def is_authenticated(self):
+        return True
+    def is_anonymous(self):
+        return False
+    pass
+
+
 
 
 # 聚合标签和分类

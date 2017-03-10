@@ -3,6 +3,7 @@
 from flask import Flask
 from flask_mongoengine import MongoEngine
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 import sys
 import os
 reload(sys)
@@ -25,8 +26,7 @@ def set_url(name, kinds=0):
         return "/page/" + str(name)
     if kinds == 3:
         return "/class/" + str(name)
-
-
+login_manager = LoginManager()
 def create_app():
     app = Flask(__name__)
     app.config['MONGODB_SETTINGS'] = {
@@ -35,6 +35,8 @@ def create_app():
     }
     app.config['UPLOAD_FOLDER'] = image_path
     app.config['SECRET_KEY'] = 'sadasdsadplosadaskldalskd'
+    app.config['author'] = 'febrain'
+    app.config['passwd'] = 'qwer1234'
     Bootstrap(app)
     app.add_template_filter(timestamp, 'timestamp')
     app.add_template_filter(set_url, 'set_url')
@@ -43,3 +45,4 @@ def create_app():
 
 app = create_app()
 db = MongoEngine(app)
+login_manager.init_app(app)

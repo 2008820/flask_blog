@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # encoding=utf-8
-from flask import request, render_template, Response
-from app import app
-from model import Post_page, add_class_tags, get_tags_class, split_page_func
+from flask import request, render_template, Response, url_for, redirect
+from app import app, login_manager
+from flask_login import login_user, login_required,logout_user, current_user
+from model import Post_page, add_class_tags, get_tags_class, split_page_func,User
 import datetime
 import json
 import uuid
 import os
+
 
 
 def post_list(data):
@@ -40,8 +42,15 @@ if len(Post_page.objects) % setting.page == 0:
 else:
     ct.page_all = len(Post_page.objects) / setting.page + 1
 
+@login_manager.user_loader
+def user_loader(user):
+    user = User()
+    return user
 
-@app.route('/post', methods=['GET', 'POST'])
+
+
+@app.route('/admin/post', methods=['GET', 'POST'])
+@login_required
 def post_page():
     if request.method == 'POST':
         post_data = request.form
@@ -66,6 +75,26 @@ def post_page():
         return 'post ok!'
     return render_template('admin/post.html')
 
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    if request.method == "POST":
+        postData = request.form
+        if app.config['author'] == postData.get('user','') and app.config['passwd'] == postData.get('passwd',''):
+            user = User()
+            user.id = app.config['author']
+            login_user(user)
+            return redirect(url_for("post_page"))
+        return """ Bad login """
+    if current_user.is_authenticated:
+        return redirect(url_for("post_page"))
+    return render_template('admin/login.html')
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return 'Logged out'
 
 @app.route("/ImageUpdate", methods=["POST"])
 def GetImage():
