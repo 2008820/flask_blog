@@ -2,7 +2,6 @@
 # encoding=utf-8
 from flask import Flask
 from flask_mongoengine import MongoEngine
-from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 import sys
 import os
@@ -37,7 +36,6 @@ def create_app():
     app.config['SECRET_KEY'] = 'sadasdsadplosadaskldalskd'
     app.config['author'] = 'febrain'
     app.config['passwd'] = 'qwer1234'
-    Bootstrap(app)
     app.add_template_filter(timestamp, 'timestamp')
     app.add_template_filter(set_url, 'set_url')
     return app
