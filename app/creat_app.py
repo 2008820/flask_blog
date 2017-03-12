@@ -6,6 +6,7 @@ from flask_login import LoginManager
 import sys
 from web_conf import user, passwd
 import os
+import re
 reload(sys)
 sys.setdefaultencoding('utf-8')
 root_path = os.path.abspath('./')
@@ -18,6 +19,11 @@ def timestamp(time, type=False):
 
 if not os.path.exists("image"):
     os.mkdir("image")
+
+def clean_html_tag(content):
+    html = re.sub('<[\s\S]*?>', "", content)
+    html = re.sub('<[\s\S]+>*', "", html)
+    return html
 
 def set_url(name, kinds=0):
     if kinds == 0:
@@ -44,6 +50,7 @@ def create_app():
     app.config['qiniuhost'] = "http://oml5dvid2.bkt.clouddn.com/"
     app.add_template_filter(timestamp, 'timestamp')
     app.add_template_filter(set_url, 'set_url')
+    app.add_template_filter(clean_html_tag, 'clean_tag')
     return app
 
 

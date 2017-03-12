@@ -10,16 +10,24 @@
                             </time>
                         </div>
                     </div>
+                        {% if flow ==0 %}
+                    {% if item.image_url %}
                     <div class="featured-media">
-                        <a href="{{item.url|set_url(0)}}"><img alt="Ghost 桌面版 APP 正式发布，能同时管理多个 Ghost 博客" src="{{url_for('static',filename='e447fa21190690b28f1957d5937f4.png')}}"/></a>
+                        <a href="{{item.url|set_url(0)}}"><img alt="item.image_alt" src="{{item.image_url}}"/></a>
                     </div>
+                    {% else %}
+                    <div class="featured-media">
+                        <a href="{{item.url|set_url(0)}}"><img alt="重庆seo_febrain" src="{{url_for('static',filename='default.png')}}"/></a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
                     <div class="post-content">
                         {% if flow==1 %}
                         {% autoescape false %}
                         <p>{{item.content}}</p>
                         {% endautoescape %}
                         {% else %}
-                        <p>{{item.content[:100]}}</p>
+                        <p>{{item.content[:100]|clean_tag()}}</p>
                         {% endif %}
                     </div>
                     {% if flow==0 %}

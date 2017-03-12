@@ -16,10 +16,10 @@
 <a href="{{ url_for('logout') }}"> 登出 </a>
       <form action="{{ url_for('post_page') }}" method=post id="postPage">
     <dl>
-            <dt>title---------<input type=text name=title>
-            <dt>publishTime---<input type=text name=publish>
-            <dt>classify------<input type=text name=classify>
-            <dt>tags----------<input type=text name=tags>
+            <dt>title---------<input type=text name="title">
+            <dt>publishTime---<input type=text name="publish">
+            <dt>classify------<input type=text name="classify">
+            <dt>tags----------<input type=text name="tags">
         <dd> <input type=submit value=Post>
       </form>
     <textarea form="postPage"  id="content" name="content">

@@ -8,7 +8,7 @@ from flask_login import UserMixin
 
 class Post_page(db.Document):
     title = db.StringField(max_length=150, required=True)
-    publish = db.DateTimeField(default=datetime.datetime.now)
+    publish = db.DateTimeField()
     meta = {
         'collection': 'page',
         'ordering': ['-publish'],
@@ -19,6 +19,8 @@ class Post_page(db.Document):
             "url",
         ]
     }
+    image_url = db.StringField()
+    image_alt = db.StringField()
     url = db.StringField()
     tags = db.ListField(db.StringField(max_length=30))
     content = db.StringField()

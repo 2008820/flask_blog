@@ -11,10 +11,10 @@ from model import Post_page, add_class_tags, get_tags_class, split_page_func,Use
 try:
     import qiniu_image
 except:
-    pass
+    exit("请安装 pip install qiniu")
 import uuid
 import os
-
+import re
 
 
 def post_list(data):
@@ -61,14 +61,27 @@ def post_page():
         post_data = request.form
         class_list = post_list(post_data.get('classify', ''))
         tags_list = post_list(post_data.get('tags', ''))
-        publish_time = post_data.get('publish', datetime.datetime.now())
-        if isinstance(publish_time, str):
-            publish_time = datetime.datetime.strptime(publish_time, "%Y-%m-%d %H:%M:%S")
-        print publish_time
+        content = post_data.get('content', '')
+        print class_list, tags_list, post_data['title']
+        print post_data.get('publish')
+        publish_time = post_data.get('publish')
+        if not publish_time.strip():
+            publish_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        image_url_list = re.findall('<img[\s\S]*?src="(.+?)"[\s\S]*?alt="(.*?)"', content)
+        print content
+        print image_url_list
+        if image_url_list:
+            image_url = image_url_list[0][0]
+            alt = image_url_list[0][1]
+        else:
+            image_url = ""
+            alt = ""
         Post_page.objects(title=post_data['title']).update_one(tags=tags_list,
                                                                classify=class_list,
                                                                publish=publish_time,
-                                                               content=post_data.get('content', ''),
+                                                               content=content,
+                                                               image_url=image_url,
+                                                               image_alt=alt,
                                                                url=uuid.uuid4().__str__(), upsert=True)
         # page.save()
         add_class_tags(class_list, tags_list)
@@ -81,7 +94,6 @@ def post_page():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-
     if request.method == "POST":
         postData = request.form
         if app.config['author'] == postData.get('user','') and app.config['passwd'] == postData.get('passwd',''):
@@ -117,6 +129,7 @@ def GetImage():
                 res = Response(imgUrl)
                 res.headers["ContentType"] = "text/html"
                 res.headers["Charset"] = "utf-8"
+                return res
             qiniu_image.upload(file)
             return app.config["qiniuhost"] + file.filename
 
