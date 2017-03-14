@@ -1,0 +1,15 @@
+{% extends "admin/post.html" %}
+{% block form %}
+<a href="{{ url_for('logout') }}"> 登出 </a>
+      <form action="{{ url_for('post_page') }}" method=post id="postPage">
+    <dl>
+            <dt>title---------<input type=text name="title" value="{{article.title}}">
+            <dt>publishTime---<input type=text name="publish" value="{{article.publish}}">
+            <dt>classify------<input type=text name="classify" value="{{article.classify}}">
+            <dt>tags----------<input type=text name="tags" value="{{article.tags}}">
+        <dd> <input type=submit value=Post>
+      </form>
+    <textarea form="postPage"  id="content" name="content">
+        {{article.content}}
+    </textarea>
+{% endblock %}

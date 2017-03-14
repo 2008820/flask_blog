@@ -5,6 +5,9 @@
                         <h1 class="post-title"><a href="{{item.url|set_url(0)}}">{{item.title}}</a></h1>
                         <div class="post-meta">
                             <span class="author">作者：<a href="#">铁脑壳</a></span> •
+                            {% if object.edit %}
+                            <a href="/admin/edit?id={{item.url}}"> 编辑 </a>
+                            {% endif %}
                             <time class="post-date" datetime="{{item.publish|timestamp(True)}}" title="{{item.publish|timestamp(True)}}">
                                 {{item.publish|timestamp}}
                             </time>
@@ -13,11 +16,11 @@
                         {% if flow ==0 %}
                     {% if item.image_url %}
                     <div class="featured-media">
-                        <a href="{{item.url|set_url(0)}}"><img alt="item.image_alt" src="{{item.image_url}}"/></a>
+                        <a href="{{item.url|set_url(0)}}"><img alt="item.image_alt" src="{{item.image_url}}" style="height: 254px;" /></a>
                     </div>
                     {% else %}
                     <div class="featured-media">
-                        <a href="{{item.url|set_url(0)}}"><img alt="重庆seo_febrain" src="{{url_for('static',filename='default.png')}}"/></a>
+                        <a href="{{item.url|set_url(0)}}"><img alt="重庆seo_febrain" src="{{url_for('static',filename='image/default.png')}}"/></a>
                     </div>
                     {% endif %}
                     {% endif %}
@@ -46,5 +49,21 @@
                         </div>
                     </footer>
                 </article>
+                {% if flow==1 %}
+                <div class="ds-thread" data-thread-key="{{item.url}}" data-title="{{item.title}}" data-url="{{item.url|set_url(0)}}"></div>
+                <!-- 多说评论框 end -->
+                <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+                <script type="text/javascript">
+                var duoshuoQuery = {short_name:"febrain"};
+                (function() {
+                var ds = document.createElement('script');
+                ds.type = 'text/javascript';ds.async = true;
+                ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                ds.charset = 'UTF-8';
+                (document.getElementsByTagName('head')[0]
+                 || document.getElementsByTagName('body')[0]).appendChild(ds);
+                })();
+                </script>
+                {% endif %}
     {% endfor%}
 {% endmacro %}

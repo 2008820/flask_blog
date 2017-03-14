@@ -1,3 +1,6 @@
 flask
 flask_mongoengine
-flask-bootstrap==3.3.7.1
+Flask-Cache
+qiniu
+requests
+flask_login

@@ -13,6 +13,7 @@
     </style>
 </head>
 <body>
+{% block form %}
 <a href="{{ url_for('logout') }}"> 登出 </a>
       <form action="{{ url_for('post_page') }}" method=post id="postPage">
     <dl>
@@ -25,7 +26,7 @@
     <textarea form="postPage"  id="content" name="content">
         <p>请输入内容...</p>
     </textarea>
-
+{% endblock %}
 
     <script type="text/javascript" src="{{url_for('static',filename='admin/js/jquery-1.10.2.min.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static',filename='admin/js/wangEditor.js')}}"></script>

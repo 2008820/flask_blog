@@ -3,8 +3,9 @@
 from flask import Flask
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
+from flask.ext.cache import Cache
 import sys
-from web_conf import user, passwd
+from web_conf import user, passwd, qiniu_host
 import os
 import re
 reload(sys)
@@ -35,6 +36,7 @@ def set_url(name, kinds=0):
     if kinds == 3:
         return "/class/" + str(name)
 login_manager = LoginManager()
+
 def create_app():
     app = Flask(__name__)
     app.config['MONGODB_SETTINGS'] = {
@@ -47,7 +49,7 @@ def create_app():
     app.config['SECRET_KEY'] = 'sadasdsadplosadaskldalskd'
     app.config['author'] = user
     app.config['passwd'] = passwd
-    app.config['qiniuhost'] = "http://oml5dvid2.bkt.clouddn.com/"
+    app.config['qiniuhost'] = qiniu_host
     app.add_template_filter(timestamp, 'timestamp')
     app.add_template_filter(set_url, 'set_url')
     app.add_template_filter(clean_html_tag, 'clean_tag')
@@ -57,3 +59,4 @@ def create_app():
 app = create_app()
 db = MongoEngine(app)
 login_manager.init_app(app)
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})

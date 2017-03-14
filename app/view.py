@@ -2,10 +2,10 @@
 # encoding=utf-8
 import datetime
 
-from flask import request, render_template, Response, url_for, redirect
+from flask import request, render_template, Response, url_for, redirect, g
 from flask_login import login_user, login_required,logout_user, current_user
 
-from creat_app import app, login_manager
+from creat_app import app, login_manager, cache
 from model import Post_page, add_class_tags, get_tags_class, split_page_func,User
 
 try:
@@ -62,17 +62,16 @@ def post_page():
         class_list = post_list(post_data.get('classify', ''))
         tags_list = post_list(post_data.get('tags', ''))
         content = post_data.get('content', '')
-        print class_list, tags_list, post_data['title']
-        print post_data.get('publish')
         publish_time = post_data.get('publish')
         if not publish_time.strip():
             publish_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        image_url_list = re.findall('<img[\s\S]*?src="(.+?)"[\s\S]*?alt="(.*?)"', content)
-        print content
+        image_url_list = re.findall('<img[\s\S]*?src="(.+?)"[\s\S]*?.*?a?l?t?=?"?(.*?)"?', content)
         print image_url_list
         if image_url_list:
             image_url = image_url_list[0][0]
             alt = image_url_list[0][1]
+            if not alt:
+                alt = 'febrain的位置'
         else:
             image_url = ""
             alt = ""
@@ -90,6 +89,21 @@ def post_page():
         ct.page_all = len(Post_page.objects) / app.config["posts_num"] + 1
         return 'post ok!'
     return render_template('admin/post.html')
+
+@app.route("/admin/edit", methods=["GET","POST"])
+def edit_article():
+    article_id = request.args.get("id")
+    if article_id:
+        article = Post_page.objects.get(url=article_id)
+        if article.classify:
+            article.classify = ",".join(article.classify)
+        else:
+            article.classify = ""
+        if article.tags:
+            article.tags = ",".join(article.tags)
+        else:
+            article.tags = ""
+        return render_template("admin/editor.html", article=article)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -161,30 +175,44 @@ def view_tag_class(kinds, vaule, numnow, **context):
                            current_page=pagenum_int, **context)
 
 
+def make_cache_key(*args, **kwargs):
+    path = request.path
+    args = str(hash(frozenset(request.args.items())))
+    print request.args.items()
+    print str(path+args)
+    return str(path+args)
 
 
 @app.route('/')
 @app.route('/page/<pagenum>')
+# @cache.cached(timeout=3600, key_prefix=make_cache_key)
 def index(pagenum=1):
     pagenum_int = int(pagenum)
     posts = Post_page.objects.paginate(page=pagenum_int, per_page=app.config["posts_num"])
     split_page = split_page_func(ct.page_all, pagenum_int)
+    if current_user.is_authenticated:
+        posts.edit = True
     return render_template("index.html", page=posts, pagenum=split_page, page_class=2, classify=ct.class_list,
                            tags=ct.tag_list, current_page=pagenum_int)
 
 
 @app.route('/class/<classify>')
 @app.route('/class/<classify>/<pagenum>')
+# @cache.cached(timeout=3600, key_prefix=make_cache_key)
 def class_view(classify, pagenum=1):
     return view_tag_class('classify', classify, pagenum)
 
 
 @app.route('/tags/<tag>')
 @app.route('/tags/<tag>/<pagenum>')
+# @cache.cached(timeout=3600, key_prefix=make_cache_key)
 def tag_view(tag, pagenum=1):
     return view_tag_class('tags', tag, pagenum)
 
 @app.route('/detail/<pageId>')
+# @cache.cached(timeout=3600, key_prefix=make_cache_key)
 def get_page_detail(pageId):
     pageObj = Post_page.objects(url=pageId).paginate(page=1, per_page=app.config["posts_num"])
+    if current_user.is_authenticated:
+        pageObj.edit = True
     return render_template("detail.html", page=pageObj, classify=ct.class_list,tags=ct.tag_list)

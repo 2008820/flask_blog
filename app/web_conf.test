@@ -1,0 +1,5 @@
+access_key = '' # 七牛的KEY
+secret_key = '' # 七牛的KEY
+qiniu_host = "" # 七牛的host
+user = ''       # admin user
+passwd = ''    #admin passwd

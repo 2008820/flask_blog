@@ -56,19 +56,19 @@
 
 <!-- start header -->
 <header class="main-header"
-        style="background-image: url(http://static.ghostchina.com/image/6/d1/fcb3879e14429d75833a461572e64.jpg)">
+        style="background-image: url({{url_for('static',filename='image/background.jpg')}})">
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
 
                 <!-- start logo -->
-                <a class="branding" href="#" title="无聊的博客系统"><img alt="无聊的博客系统"
-                                                                  src="{{url_for('static',filename='4f5566c1f7bc28b3f7ac1fada8abe.png')}}"/></a>
+                <a class="branding" href="#"><img
+                        src="{{url_for('static',filename='image/logo.png')}}"/></a>
                 <!-- end logo -->
-                <h2 class="text-hide">无聊的博客系统</h2>
+                <h2 class="text-hide"></h2>
 
-                <img alt="无聊的博客系统" class="hide"
-                     src="{{url_for('static',filename='fcb3879e14429d75833a461572e64.jpg')}}"/>
+                <!--<img class="hide"-->
+                     <!--src="{{url_for('static',filename='fcb3879e14429d75833a461572e64.jpg')}}"/>-->
             </div>
         </div>
     </div>
@@ -137,24 +137,24 @@
                     <h4 class="title">标签云</h4>
 
                     <div class="content tag-cloud">
-                        {% for tag in tags %}
-                        <a href="{{tag|set_url(1)}}">{{tag}}</a>
-                        {% endfor %}
+                        {% block middletags%}
+                        {% include 'tags.html' %}
+                        {% endblock %}
 
                     </div>
                 </div>
 
                 <!--<div class="col-sm-18">-->
-                    <!--<div class="widget">-->
-                        <!--<h4 class="title">最新文章</h4>-->
+                <!--<div class="widget">-->
+                <!--<h4 class="title">最新文章</h4>-->
 
-                        <!--<div class="content recent-post">-->
-                            <!--<div class="recent-single-post">-->
-                                <!--<a class="post-title" href="#">#</a>-->
-                                <!--<div class="date">2016年7月26日</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--<div class="content recent-post">-->
+                <!--<div class="recent-single-post">-->
+                <!--<a class="post-title" href="#">#</a>-->
+                <!--<div class="date">2016年7月26日</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
                 <!--</div>-->
                 <div class="col-sm-18">
                     <div class="widget">
@@ -190,10 +190,9 @@
                     <h4 class="title">标签云</h4>
 
                     <div class="content tag-cloud">
-
-                        {% for tag in tags %}
-                        <a href="{{tag|set_url(1)}}">{{tag}}</a>
-                        {% endfor %}
+                        {% block foottags%}
+                        {% include 'tags.html' %}
+                        {% endblock %}
                     </div>
                 </div>
             </div>
@@ -233,20 +232,15 @@
 <script src="{{url_for('static',filename='highlight.min.js')}}"></script>
 <script src="{{url_for('static',filename='jquery.magnific-popup.min.js')}}"></script>
 <script src="{{url_for('static',filename='main.js')}}"></script>
-<script>
-    $(function () {
-        $('.post-content img').each(function (item) {
-            var src = $(this).attr('src');
+<!--<script>-->
+    <!--$(function () {-->
+        <!--$('.post-content img').each(function (item) {-->
+            <!--var src = $(this).attr('src');-->
 
-            $(this).wrap('<a href="' + src + '" class="mfp-zoom" style="display:block;"></a>');
-        });
-
-        /*$('.post-content').magnificPopup({
-         delegate: 'a',
-         type: 'image'
-         });*/
-    });
-</script>
+            <!--$(this).wrap('<a href="' + src + '" class="mfp-zoom" style="display:block;"></a>');-->
+        <!--});-->
+    <!--});-->
+<!--</script>-->
 
 
 </body>
