@@ -182,14 +182,10 @@ def make_cache_key(*args, **kwargs):
     print str(path+args)
     return str(path+args)
 
-num = 0
 @app.route('/')
 @app.route('/page/<pagenum>')
 # @cache.cached(timeout=app.config['cache_time'], key_prefix=make_cache_key)
 def index(pagenum=1):
-    global num
-    num +=1
-    print num
     get_backgroud_img()
     pagenum_int = int(pagenum)
     posts = Post_page.objects.paginate(page=pagenum_int, per_page=app.config["posts_num"])
