@@ -3,3 +3,5 @@ secret_key = '' # 七牛的KEY
 qiniu_host = "" # 七牛的host
 user = ''       # admin user
 passwd = ''    #admin passwd
+host = ""       # 主机IP admin@ip
+host_passwd = "" # 主机密码
