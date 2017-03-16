@@ -35,6 +35,9 @@ def set_url(name, kinds=0):
         return "/page/" + str(name)
     if kinds == 3:
         return "/class/" + str(name)
+
+
+
 login_manager = LoginManager()
 
 def create_app():
@@ -50,6 +53,7 @@ def create_app():
     app.config['author'] = user
     app.config['passwd'] = passwd
     app.config['qiniuhost'] = qiniu_host
+    app.config['cache_time'] = 60*60
     app.add_template_filter(timestamp, 'timestamp')
     app.add_template_filter(set_url, 'set_url')
     app.add_template_filter(clean_html_tag, 'clean_tag')

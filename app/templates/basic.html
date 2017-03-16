@@ -22,6 +22,7 @@
     <meta content="origin" name="referrer"/>
     <script src="{{url_for('static',filename='ghost-url.min.js')}}" type="text/javascript"></script>
     <script src="{{url_for('static',filename='share.js')}}"></script>
+    <base target="_blank">
     <style id="fit-vids-style">.fluid-width-video-wrapper {
         width: 100%;
         position: relative;
@@ -56,13 +57,13 @@
 
 <!-- start header -->
 <header class="main-header"
-        style="background-image: url({{url_for('static',filename='image/background.jpg')}})">
+        style="background-image: url({% include "config_html/backgroudUrl.html" %})">
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
 
                 <!-- start logo -->
-                <a class="branding" href="#"><img
+                <a class="branding" href="{% include "config_html/backgroudUrl.html" %}" target="_blank" ><img
                         src="{{url_for('static',filename='image/logo.png')}}"/></a>
                 <!-- end logo -->
                 <h2 class="text-hide"></h2>
@@ -118,20 +119,7 @@
 
 
             </main>
-
-            <div class="col-md-4 sidebar">
-
-                <div class="widget">
-                    <h4 class="title">个人资料</h4>
-
-                    <div class="content community">
-                        <p>QQ：2858487913</p>
-
-                        <p></p>
-
-                        <p></p>
-                    </div>
-                </div>
+                {% include "introduce-self.html" %}
 
                 <div class="widget">
                     <h4 class="title">标签云</h4>

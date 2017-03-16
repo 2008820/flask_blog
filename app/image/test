@@ -1,0 +1,21 @@
+package main
+import (
+	//"fmt"
+	"github.com/parnurzeal/gorequest"
+	"time"
+)
+
+func requests(){
+	request := gorequest.New()
+	url := "http://0.0.0.0:5000"
+	_, _, _ = request.Get(url).
+			    End()
+	//fmt.Println("")
+}
+
+func main(){
+	for i:=0;i<1000 ;i++{
+		go requests()
+	}
+	time.Sleep(time.Second)
+}

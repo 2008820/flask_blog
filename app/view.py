@@ -7,7 +7,7 @@ from flask_login import login_user, login_required,logout_user, current_user
 
 from creat_app import app, login_manager, cache
 from model import Post_page, add_class_tags, get_tags_class, split_page_func,User
-
+from function import get_backgroud_img
 try:
     import qiniu_image
 except:
@@ -182,11 +182,15 @@ def make_cache_key(*args, **kwargs):
     print str(path+args)
     return str(path+args)
 
-
+num = 0
 @app.route('/')
 @app.route('/page/<pagenum>')
-# @cache.cached(timeout=3600, key_prefix=make_cache_key)
+# @cache.cached(timeout=app.config['cache_time'], key_prefix=make_cache_key)
 def index(pagenum=1):
+    global num
+    num +=1
+    print num
+    get_backgroud_img()
     pagenum_int = int(pagenum)
     posts = Post_page.objects.paginate(page=pagenum_int, per_page=app.config["posts_num"])
     split_page = split_page_func(ct.page_all, pagenum_int)
@@ -198,19 +202,19 @@ def index(pagenum=1):
 
 @app.route('/class/<classify>')
 @app.route('/class/<classify>/<pagenum>')
-# @cache.cached(timeout=3600, key_prefix=make_cache_key)
+# @cache.cached(timeout=app.config['cache_time'], key_prefix=make_cache_key)
 def class_view(classify, pagenum=1):
     return view_tag_class('classify', classify, pagenum)
 
 
 @app.route('/tags/<tag>')
 @app.route('/tags/<tag>/<pagenum>')
-# @cache.cached(timeout=3600, key_prefix=make_cache_key)
+# @cache.cached(timeout=app.config['cache_time'], key_prefix=make_cache_key)
 def tag_view(tag, pagenum=1):
     return view_tag_class('tags', tag, pagenum)
 
 @app.route('/detail/<pageId>')
-# @cache.cached(timeout=3600, key_prefix=make_cache_key)
+# @cache.cached(timeout=app.config['cache_time'], key_prefix=make_cache_key)
 def get_page_detail(pageId):
     pageObj = Post_page.objects(url=pageId).paginate(page=1, per_page=app.config["posts_num"])
     if current_user.is_authenticated:

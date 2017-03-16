@@ -4,7 +4,7 @@
                     <div class="post-head">
                         <h1 class="post-title"><a href="{{item.url|set_url(0)}}">{{item.title}}</a></h1>
                         <div class="post-meta">
-                            <span class="author">作者：<a href="#">铁脑壳</a></span> •
+                            <span class="author">作者：铁脑壳 </span> •
                             {% if object.edit %}
                             <a href="/admin/edit?id={{item.url}}"> 编辑 </a>
                             {% endif %}
@@ -20,7 +20,7 @@
                     </div>
                     {% else %}
                     <div class="featured-media">
-                        <a href="{{item.url|set_url(0)}}"><img alt="重庆seo_febrain" src="{{url_for('static',filename='image/default.png')}}"/></a>
+                        <a href="{{item.url|set_url(0)}}"><img alt="重庆seo_febrain" src="{{url_for('static',filename='image/default.png')}}" style="height: 254px;" /></a>
                     </div>
                     {% endif %}
                     {% endif %}
