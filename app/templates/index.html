@@ -2,6 +2,12 @@
 {% import "content.html" as content %}
 
 {%block seo%}
+ {% if kinds %}
+<title>{{kinds}}_程序员的自我修养-febrain</title>
+{% else %}
+    <title>程序员的自我修养-febrain</title>
+{% endif %}
+<meta content="程序员的自我修养-febrain:主要写python 偶尔写写go,研究各类好玩的东西" name="description"/>
 {%endblock%}
 
 {% block content %}

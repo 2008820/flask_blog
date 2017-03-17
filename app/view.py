@@ -53,6 +53,16 @@ def user_loader(user):
     return user
 
 
+@app.before_request
+def get_header():
+    data = request.environ
+    # print data["werkzeug.request"].get("REMOTE_ADDR", "")
+    # print data["werkzeug.request"].__dict__
+    cdata = data["werkzeug.request"]
+    # print cdata.__dict__
+    # print dir(cdata)
+    print cdata.method, cdata.host, cdata.referrer, cdata.remote_addr, cdata.path, cdata.routing_exception, data["HTTP_USER_AGENT"]
+
 
 @app.route('/admin/post', methods=['GET', 'POST'])
 @login_required
@@ -193,7 +203,7 @@ def index(pagenum=1):
     if current_user.is_authenticated:
         posts.edit = True
     return render_template("index.html", page=posts, pagenum=split_page, page_class=2, classify=ct.class_list,
-                           tags=ct.tag_list, current_page=pagenum_int)
+                           tags=ct.tag_list, current_page=pagenum_int, kinds="")
 
 
 @app.route('/class/<classify>')
@@ -212,7 +222,10 @@ def tag_view(tag, pagenum=1):
 @app.route('/detail/<pageId>')
 # @cache.cached(timeout=app.config['cache_time'], key_prefix=make_cache_key)
 def get_page_detail(pageId):
-    pageObj = Post_page.objects(url=pageId).paginate(page=1, per_page=app.config["posts_num"])
+    dataObj = Post_page.objects(url=pageId)
+    for item in dataObj:
+        title = item.title
+    pageObj = dataObj.paginate(page=1, per_page=app.config["posts_num"])
     if current_user.is_authenticated:
         pageObj.edit = True
-    return render_template("detail.html", page=pageObj, classify=ct.class_list,tags=ct.tag_list)
+    return render_template("detail.html", page=pageObj, classify=ct.class_list, tags=ct.tag_list,title=title)

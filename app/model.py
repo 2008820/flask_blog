@@ -1,9 +1,10 @@
 #! /usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from creat_app  import db
-import datetime
 from flask_login import UserMixin
+
+from creat_app import db
+
 
 
 class Post_page(db.Document):
