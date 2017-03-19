@@ -12,6 +12,7 @@ try:
     import qiniu_image
 except:
     exit("请安装 pip install qiniu")
+import hashlib
 import uuid
 import os
 import re
@@ -85,13 +86,17 @@ def post_page():
         else:
             image_url = ""
             alt = ""
-        Post_page.objects(title=post_data['title']).update_one(tags=tags_list,
+        title = post_data['title']
+        md5 = hashlib.md5()
+        md5.update(title)
+        url = md5.hexdigest()
+        Post_page.objects(title=title).update_one(tags=tags_list,
                                                                classify=class_list,
                                                                publish=publish_time,
                                                                content=content,
                                                                image_url=image_url,
                                                                image_alt=alt,
-                                                               url=uuid.uuid4().__str__(), upsert=True)
+                                                               url=url, upsert=True)
         # page.save()
         add_class_tags(class_list, tags_list)
         class_list, ct.tag_list = get_tags_class()
@@ -137,7 +142,7 @@ def logout():
 
 @app.route("/ImageUpdate", methods=["POST"])
 def GetImage():
-    file = request.files['wangEditorH5File']
+    file = request.files['myFileName']
     if file == None:
         result = r"error|未成功获取文件，上传失败"
         res = Response(result)
@@ -188,8 +193,6 @@ def view_tag_class(kinds, vaule, numnow, **context):
 def make_cache_key(*args, **kwargs):
     path = request.path
     args = str(hash(frozenset(request.args.items())))
-    print request.args.items()
-    print str(path+args)
     return str(path+args)
 
 @app.route('/')
