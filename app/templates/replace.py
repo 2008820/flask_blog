@@ -18,11 +18,14 @@ def replace_name(ftag, stag):
         if hreftag:
             if name in hreftag:
                 if not hreftag.endswith('html'):
-                    new_href = hreftag.replace(name, "{{url_for('static',filename='") + "')}}"
+                    new_href = hreftag.replace(
+                        name, "{{url_for('static',filename='") + "')}}"
                     print link
                     link[stag] = new_href
                     print link
                 # print link
+
+
 replace_name('link', 'href')
 replace_name('script', 'src')
 replace_name('img', 'src')

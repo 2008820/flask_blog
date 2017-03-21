@@ -13,18 +13,22 @@ sys.setdefaultencoding('utf-8')
 root_path = os.path.abspath('./')
 image_path = root_path + '/image'
 
+
 def timestamp(time, type=False):
     if type:
         return time.strftime("%Y年%m月%d日 %H时%M分%S秒")
     return time.strftime("%Y年%m月%d日")
 
+
 if not os.path.exists("image"):
     os.mkdir("image")
+
 
 def clean_html_tag(content):
     html = re.sub('<[\s\S]*?>', "", content)
     html = re.sub('<[\s\S]+>*', "", html)
     return html
+
 
 def set_url(name, kinds=0):
     if kinds == 0:
@@ -37,15 +41,12 @@ def set_url(name, kinds=0):
         return "/class/" + str(name)
 
 
-
 login_manager = LoginManager()
+
 
 def create_app():
     app = Flask(__name__)
-    app.config['MONGODB_SETTINGS'] = {
-        'db': 'web_app',
-        'host': "127.0.0.1"
-    }
+    app.config['MONGODB_SETTINGS'] = {'db': 'web_app', 'host': "127.0.0.1"}
     app.config["posts_num"] = 6
     app.config['classify_url'] = {}
     app.config['UPLOAD_FOLDER'] = image_path
@@ -53,7 +54,7 @@ def create_app():
     app.config['author'] = user
     app.config['passwd'] = passwd
     app.config['qiniuhost'] = qiniu_host
-    app.config['cache_time'] = 60*60
+    app.config['cache_time'] = 60 * 60
     app.add_template_filter(timestamp, 'timestamp')
     app.add_template_filter(set_url, 'set_url')
     app.add_template_filter(clean_html_tag, 'clean_tag')

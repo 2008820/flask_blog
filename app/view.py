@@ -3,10 +3,10 @@
 import datetime
 
 from flask import request, render_template, Response, url_for, redirect, g
-from flask_login import login_user, login_required,logout_user, current_user
+from flask_login import login_user, login_required, logout_user, current_user
 
 from creat_app import app, login_manager, cache
-from model import Post_page, add_class_tags, get_tags_class, split_page_func,User
+from model import Post_page, add_class_tags, get_tags_class, split_page_func, User
 from function import get_backgroud_img
 try:
     import qiniu_image
@@ -22,7 +22,6 @@ def post_list(data):
     if data:
         return data.split(',')
     return []
-
 
 
 # class_tag 缓存
@@ -48,6 +47,7 @@ if len(Post_page.objects) % app.config["posts_num"] == 0:
 else:
     ct.page_all = len(Post_page.objects) / app.config["posts_num"] + 1
 
+
 @login_manager.user_loader
 def user_loader(user):
     user = User()
@@ -62,7 +62,8 @@ def get_header():
     cdata = data["werkzeug.request"]
     # print cdata.__dict__
     # print dir(cdata)
-    print cdata.method, cdata.host, cdata.referrer, cdata.remote_addr, cdata.path, cdata.routing_exception, data["HTTP_USER_AGENT"]
+    print cdata.method, cdata.host, cdata.referrer, cdata.remote_addr, cdata.path, cdata.routing_exception, data[
+        "HTTP_USER_AGENT"]
 
 
 @app.route('/admin/post', methods=['GET', 'POST'])
@@ -75,8 +76,10 @@ def post_page():
         content = post_data.get('content', '')
         publish_time = post_data.get('publish')
         if not publish_time.strip():
-            publish_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        image_url_list = re.findall('<img[\s\S]*?src="(.+?)"[\s\S]*?.*?a?l?t?=?"?(.*?)"?', content)
+            publish_time = datetime.datetime.now().strftime(
+                "%Y-%m-%d %H:%M:%S")
+        image_url_list = re.findall(
+            '<img[\s\S]*?src="(.+?)"[\s\S]*?.*?a?l?t?=?"?(.*?)"?', content)
         print image_url_list
         if image_url_list:
             image_url = image_url_list[0][0]
@@ -90,13 +93,15 @@ def post_page():
         md5 = hashlib.md5()
         md5.update(title)
         url = md5.hexdigest()
-        Post_page.objects(title=title).update_one(tags=tags_list,
-                                                               classify=class_list,
-                                                               publish=publish_time,
-                                                               content=content,
-                                                               image_url=image_url,
-                                                               image_alt=alt,
-                                                               url=url, upsert=True)
+        Post_page.objects(title=title).update_one(
+            tags=tags_list,
+            classify=class_list,
+            publish=publish_time,
+            content=content,
+            image_url=image_url,
+            image_alt=alt,
+            url=url,
+            upsert=True)
         # page.save()
         add_class_tags(class_list, tags_list)
         class_list, ct.tag_list = get_tags_class()
@@ -105,7 +110,8 @@ def post_page():
         return 'post ok!'
     return render_template('admin/post.html')
 
-@app.route("/admin/edit", methods=["GET","POST"])
+
+@app.route("/admin/edit", methods=["GET", "POST"])
 def edit_article():
     article_id = request.args.get("id")
     if article_id:
@@ -125,7 +131,9 @@ def edit_article():
 def login():
     if request.method == "POST":
         postData = request.form
-        if app.config['author'] == postData.get('user','') and app.config['passwd'] == postData.get('passwd',''):
+        if app.config['author'] == postData.get(
+                'user', '') and app.config['passwd'] == postData.get('passwd',
+                                                                     ''):
             user = User()
             user.id = app.config['author']
             login_user(user)
@@ -135,10 +143,12 @@ def login():
         return redirect(url_for("post_page"))
     return render_template('admin/login.html')
 
+
 @app.route("/logout")
 def logout():
     logout_user()
     return 'Logged out'
+
 
 @app.route("/ImageUpdate", methods=["POST"])
 def GetImage():
@@ -151,7 +161,7 @@ def GetImage():
         return res
     else:
         if file:
-            if not app.config.get("qiniuhost",""):
+            if not app.config.get("qiniuhost", ""):
                 filename = file.filename
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 imgUrl = "/image/"
@@ -162,15 +172,12 @@ def GetImage():
             qiniu_image.upload(file)
             return app.config["qiniuhost"] + file.filename
 
+
 @app.route('/image/<name>')
 def get_image(name):
     image = file(app.config['UPLOAD_FOLDER'] + '/' + name)
     resp = Response(image, mimetype="image/jpeg")
     return resp
-
-
-
-
 
 
 def view_tag_class(kinds, vaule, numnow, **context):
@@ -181,19 +188,29 @@ def view_tag_class(kinds, vaule, numnow, **context):
     elif kinds == 'classify':
         db_objects = Post_page.objects(classify=vaule)
         page_class = 3
-    posts = db_objects.paginate(page=pagenum_int, per_page=app.config["posts_num"])
+    posts = db_objects.paginate(
+        page=pagenum_int, per_page=app.config["posts_num"])
     all_page = len(db_objects) / app.config["posts_num"] + 1
     split_page_num = split_page_func(all_page, pagenum_int)
     split_page_url = [vaule + '/' + str(item) for item in split_page_num]
-    return render_template("index.html", page=posts, kinds=vaule, pagenum=split_page_num, page_class=page_class,
-                           classify=ct.class_list, tags=ct.tag_list, split_page_url=split_page_url,
-                           current_page=pagenum_int, **context)
+    return render_template(
+        "index.html",
+        page=posts,
+        kinds=vaule,
+        pagenum=split_page_num,
+        page_class=page_class,
+        classify=ct.class_list,
+        tags=ct.tag_list,
+        split_page_url=split_page_url,
+        current_page=pagenum_int,
+        **context)
 
 
 def make_cache_key(*args, **kwargs):
     path = request.path
     args = str(hash(frozenset(request.args.items())))
-    return str(path+args)
+    return str(path + args)
+
 
 @app.route('/')
 @app.route('/page/<pagenum>')
@@ -201,12 +218,20 @@ def make_cache_key(*args, **kwargs):
 def index(pagenum=1):
     get_backgroud_img()
     pagenum_int = int(pagenum)
-    posts = Post_page.objects.paginate(page=pagenum_int, per_page=app.config["posts_num"])
+    posts = Post_page.objects.paginate(
+        page=pagenum_int, per_page=app.config["posts_num"])
     split_page = split_page_func(ct.page_all, pagenum_int)
     if current_user.is_authenticated:
         posts.edit = True
-    return render_template("index.html", page=posts, pagenum=split_page, page_class=2, classify=ct.class_list,
-                           tags=ct.tag_list, current_page=pagenum_int, kinds="")
+    return render_template(
+        "index.html",
+        page=posts,
+        pagenum=split_page,
+        page_class=2,
+        classify=ct.class_list,
+        tags=ct.tag_list,
+        current_page=pagenum_int,
+        kinds="")
 
 
 @app.route('/class/<classify>')
@@ -222,6 +247,7 @@ def class_view(classify, pagenum=1):
 def tag_view(tag, pagenum=1):
     return view_tag_class('tags', tag, pagenum)
 
+
 @app.route('/detail/<pageId>')
 # @cache.cached(timeout=app.config['cache_time'], key_prefix=make_cache_key)
 def get_page_detail(pageId):
@@ -231,4 +257,9 @@ def get_page_detail(pageId):
     pageObj = dataObj.paginate(page=1, per_page=app.config["posts_num"])
     if current_user.is_authenticated:
         pageObj.edit = True
-    return render_template("detail.html", page=pageObj, classify=ct.class_list, tags=ct.tag_list,title=title)
+    return render_template(
+        "detail.html",
+        page=pageObj,
+        classify=ct.class_list,
+        tags=ct.tag_list,
+        title=title)
