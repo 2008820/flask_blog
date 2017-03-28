@@ -27,6 +27,7 @@ if not os.path.exists("image"):
 def clean_html_tag(content):
     html = re.sub('<[\s\S]*?>', "", content)
     html = re.sub('<[\s\S]+>*', "", html)
+    html = html.replace("&nbsp;", "")
     return html
 
 
