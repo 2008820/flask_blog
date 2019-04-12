@@ -3,7 +3,7 @@
 
 from flask_login import UserMixin
 
-from creat_app import db
+from .creat_app import db
 
 
 class Post_page(db.Document):
@@ -51,7 +51,7 @@ class User(UserMixin):
 def add_class_tags(class_list={}, tags_list=[]):
     if class_list:
         for classify in class_list:
-            print classify
+            print(classify)
             if not Class_tags.objects(_id='index').filter(
                     classifyList=classify):
                 Class_tags.objects(_id='index').update_one(

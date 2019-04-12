@@ -5,11 +5,11 @@ import datetime
 from flask import request, render_template, Response, url_for, redirect, g
 from flask_login import login_user, login_required, logout_user, current_user
 
-from creat_app import app, login_manager, cache
-from model import Post_page, add_class_tags, get_tags_class, split_page_func, User
-from function import get_backgroud_img
+from .creat_app import app, login_manager, cache
+from .model import Post_page, add_class_tags, get_tags_class, split_page_func, User
+from .function import get_backgroud_img
 try:
-    import qiniu_image
+    from . import qiniu_image
 except:
     exit("请安装 pip install qiniu")
 import hashlib
@@ -62,8 +62,8 @@ def get_header():
     cdata = data["werkzeug.request"]
     # print cdata.__dict__
     # print dir(cdata)
-    print cdata.method, cdata.host, cdata.referrer, cdata.remote_addr, cdata.path, cdata.routing_exception, data[
-        "HTTP_USER_AGENT"]
+    print(cdata.method, cdata.host, cdata.referrer, cdata.remote_addr, cdata.path, cdata.routing_exception, data[
+        "HTTP_USER_AGENT"])
 
 
 @app.route('/admin/post', methods=['GET', 'POST'])
@@ -80,7 +80,7 @@ def post_page():
                 "%Y-%m-%d %H:%M:%S")
         image_url_list = re.findall(
             '<img[\s\S]*?src="(.+?)"[\s\S]*?.*?a?l?t?=?"?(.*?)"?', content)
-        print image_url_list
+
         if image_url_list:
             image_url = image_url_list[0][0]
             alt = image_url_list[0][1]
@@ -191,6 +191,7 @@ def view_tag_class(kinds, vaule, numnow, **context):
     posts = db_objects.paginate(
         page=pagenum_int, per_page=app.config["posts_num"])
     all_page = len(db_objects) / app.config["posts_num"] + 1
+    print(all_page, pagenum_int)
     split_page_num = split_page_func(all_page, pagenum_int)
     split_page_url = [vaule + '/' + str(item) for item in split_page_num]
     return render_template(
@@ -220,7 +221,8 @@ def index(pagenum=1):
     pagenum_int = int(pagenum)
     posts = Post_page.objects.paginate(
         page=pagenum_int, per_page=app.config["posts_num"])
-    split_page = split_page_func(ct.page_all, pagenum_int)
+    print(ct.page_all, pagenum_int)
+    split_page = split_page_func(int(ct.page_all), pagenum_int)
     if current_user.is_authenticated:
         posts.edit = True
     return render_template(

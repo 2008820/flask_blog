@@ -13,7 +13,7 @@ def get_backgroud_img():
     now_day = datetime.datetime.today().day
     if temp_time == now_day:
         return
-    print "抓取"
+    print("抓取")
     temp_time = now_day
     url = "http://cn.bing.com"
     html = requests.get(url).content

@@ -1,5 +1,5 @@
 from qiniu import Auth, put_data
-from web_conf import access_key, secret_key
+from .web_conf import access_key, secret_key
 
 # access_key = ''
 # secret_key = ''

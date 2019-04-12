@@ -3,13 +3,14 @@
 from flask import Flask
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
-from flask.ext.cache import Cache
+# from flask.ext.cache import Cache
+from flask_cache import Cache
 import sys
-from web_conf import user, passwd, qiniu_host
+from .web_conf import user, passwd, qiniu_host
 import os
 import re
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 root_path = os.path.abspath('./')
 image_path = root_path + '/image'
 
